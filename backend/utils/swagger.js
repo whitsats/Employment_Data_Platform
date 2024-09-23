@@ -13,14 +13,6 @@ const swaggerDefinition = {
             name: "登陆注册",
             description: "用户的登陆和注册接口",
         },
-        {
-            name: "pet",
-            description: "Everything about your Pets",
-        },
-        {
-            name: "store",
-            description: "Access to Petstore orders",
-        },
     ],
     host: "localhost:3000",
     basePath: "/",
