@@ -17,11 +17,7 @@ const swaggerDefinition = {
             },
         },
     },
-    security: [
-        {
-            bearerAuth: [],
-        },
-    ],
+
     host: "localhost:3000",
     basePath: "/",
 };
