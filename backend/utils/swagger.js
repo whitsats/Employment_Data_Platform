@@ -8,10 +8,18 @@ const swaggerDefinition = {
         version: "1.0.0",
         description: "就业数据平台API接口v1.0.0",
     },
-    tags: [
+    components: {
+        securitySchemes: {
+            bearerAuth: {
+                type: "http",
+                scheme: "bearer",
+                bearerFormat: "JWT",
+            },
+        },
+    },
+    security: [
         {
-            name: "登陆注册",
-            description: "用户的登陆和注册接口",
+            bearerAuth: [],
         },
     ],
     host: "localhost:3000",

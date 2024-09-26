@@ -2,7 +2,6 @@ const { sequelize } = require("../data/connect");
 const { User } = require("../data/models")(sequelize);
 const { createUserInfo } = require("./userInfoController");
 const jwt = require("jsonwebtoken");
-const koaJwt = require("koa-jwt");
 
 const secret = "your_jwt_secret";
 
@@ -93,11 +92,11 @@ const login = async (ctx) => {
     }
 
     // 校验用户名和密码长度
-    if (username.length < 8) {
+    if (username.length < 6) {
         ctx.status = 400;
         ctx.body = {
             code: 10004,
-            message: "用户名长度不能少于8位",
+            message: "用户名长度不能少于6位",
             data: null,
         };
         return;
@@ -138,7 +137,7 @@ const login = async (ctx) => {
             code: 10000,
             message: "登录成功",
             data: {
-                ...user,
+                ...user.dataValues,
                 token,
             },
         };

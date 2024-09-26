@@ -7,6 +7,14 @@ const {
     upload,
 } = require("../controller/userInfoController");
 const KoaJwt = require("koa-jwt");
+const {
+    getAllStudents,
+    deleteStudent,
+    addStudent,
+    getStudentDetails,
+    updateStudent,
+    getDashboardData,
+} = require("../controller/studentController");
 const secret = "your_jwt_secret";
 
 /**
@@ -188,6 +196,8 @@ router.use(KoaJwt({ secret }));
  *     summary: 获取用户信息
  *     description: 根据用户ID获取用户信息
  *     tags: [个人信息]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -195,13 +205,6 @@ router.use(KoaJwt({ secret }));
  *         description: 用户ID
  *         schema:
  *           type: number
- *       - in: header
- *         name: Authorization
- *         required: true
- *         description: Bearer token
- *         schema:
- *           type: string
- *           example: Bearer <token>
  *     responses:
  *       '200':
  *         description: 获取用户信息成功
@@ -269,7 +272,7 @@ router.use(KoaJwt({ secret }));
  *                   type: string
  *                   example: 错误信息
  */
-router.get("/settings/:userId", getUserInfoById);
+router.get("/userInfo/:userId", getUserInfoById);
 /**
  * @swagger
  * /userInfo/{userId}/avatar:
@@ -277,6 +280,8 @@ router.get("/settings/:userId", getUserInfoById);
  *     summary: 更新用户头像
  *     description: 根据用户ID上传并更新用户头像
  *     tags: [个人信息]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: userId
@@ -284,13 +289,6 @@ router.get("/settings/:userId", getUserInfoById);
  *         description: 用户ID
  *         schema:
  *           type: number
- *       - in: header
- *         name: Authorization
- *         required: true
- *         description: Bearer token
- *         schema:
- *           type: string
- *           example: Bearer <token>
  *     requestBody:
  *       required: true
  *       content:
@@ -365,6 +363,8 @@ router.put("/userInfo/:userId/avatar", upload.single("avatar"), updateAvatar);
  *     summary: 更新用户基本信息
  *     description: 根据用户ID更新用户的基本信息（不包括头像）
  *     tags: [个人信息]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: userId
@@ -372,13 +372,6 @@ router.put("/userInfo/:userId/avatar", upload.single("avatar"), updateAvatar);
  *         description: 用户ID
  *         schema:
  *           type: number
- *       - in: header
- *         name: Authorization
- *         required: true
- *         description: Bearer token
- *         schema:
- *           type: string
- *           example: Bearer <token>
  *     requestBody:
  *       required: true
  *       content:
@@ -471,4 +464,490 @@ router.put("/userInfo/:userId/avatar", upload.single("avatar"), updateAvatar);
  */
 router.put("/userInfo/:userId", updateUserInfo);
 
+/**
+ * @swagger
+ * /students:
+ *   get:
+ *     summary: 获取全部学生信息
+ *     description: 获取所有学生的详细信息
+ *     tags:
+ *       - 毕业生管理
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 成功获取学生列表
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 响应消息
+ *                   example: 获取学生列表成功
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: 学生ID
+ *                       name:
+ *                         type: string
+ *                         description: 学生姓名
+ *                       age:
+ *                         type: integer
+ *                         description: 学生年龄
+ *                       gender:
+ *                         type: integer
+ *                         description: 学生性别
+ *                       hope_salary:
+ *                         type: float
+ *                         description: 期望薪资
+ *                       salary:
+ *                         type: float
+ *                         description: 实际薪资
+ *                       classNumber:
+ *                         type: string
+ *                         description: 班级编号
+ *                       province:
+ *                         type: string
+ *                         description: 省份
+ *                       city:
+ *                         type: string
+ *                         description: 城市
+ *                       area:
+ *                         type: string
+ *                         description: 区域
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                         description: 创建时间
+ *                       updatedAt:
+ *                         type: string
+ *                         format: date-time
+ *                         description: 更新时间
+ *       500:
+ *         description: 无法获取学生列表
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 错误消息
+ *                   example: 无法获取学生列表
+ */
+router.get("/students", getAllStudents);
+/**
+ * @swagger
+ * /students/{id}:
+ *   delete:
+ *     summary: 删除学生
+ *     description: 根据学生ID删除学生
+ *     tags:
+ *       - 毕业生管理
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 学生ID
+ *     responses:
+ *       204:
+ *         description: 成功删除学生，无返回数据
+ *       404:
+ *         description: 学生未找到
+ *       500:
+ *         description: 删除学生时发生错误
+ */
+router.delete("/students/:id", deleteStudent);
+
+/**
+ * @swagger
+ * /students:
+ *   post:
+ *     summary: 新增学生
+ *     description: 添加一个新的学生
+ *     tags:
+ *       - 毕业生管理
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: 姓名，最多30字符
+ *                 example: 周生生
+ *               age:
+ *                 type: integer
+ *                 description: 年龄
+ *                 example: 20
+ *               gender:
+ *                 type: integer
+ *                 description: 性别 0 男 1 女
+ *                 example: 1
+ *               province:
+ *                 type: string
+ *                 description: 省份
+ *                 example: 北京
+ *               city:
+ *                 type: string
+ *                 description: 城市
+ *                 example: 北京市
+ *               area:
+ *                 type: string
+ *                 description: 地区
+ *                 example: 顺义区
+ *               hope_salary:
+ *                 type: integer
+ *                 description: 期望薪资
+ *                 example: 10000
+ *               salary:
+ *                 type: integer
+ *                 description: 就业薪资
+ *                 example: 20000
+ *               classNumber:
+ *                 type: string
+ *                 description: 班级号
+ *                 example: 2204A
+ *     responses:
+ *       201:
+ *         description: 添加学生成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 请求结果的描述消息
+ *                   example: 添加学生成功
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       description: 学生ID
+ *                     name:
+ *                       type: string
+ *                       description: 学生姓名
+ *                     age:
+ *                       type: integer
+ *                       description: 学生年龄
+ *                     gender:
+ *                       type: integer
+ *                       description: 学生性别
+ *                     province:
+ *                       type: string
+ *                       description: 省份
+ *                     city:
+ *                       type: string
+ *                       description: 城市
+ *                     area:
+ *                       type: string
+ *                       description: 地区
+ *                     hope_salary:
+ *                       type: integer
+ *                       description: 期望薪资
+ *                     salary:
+ *                       type: integer
+ *                       description: 就业薪资
+ *                     classNumber:
+ *                       type: string
+ *                       description: 班级号
+ *       400:
+ *         description: 请求参数错误
+ *       500:
+ *         description: 添加学生时发生错误
+ */
+router.post("/students", addStudent);
+
+/**
+ * @swagger
+ * /students/{id}:
+ *   get:
+ *     summary: 获取学生详情
+ *     description: 根据学生ID获取学生的详细信息
+ *     tags:
+ *       - 毕业生管理
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 学生ID
+ *     responses:
+ *       200:
+ *         description: 成功获取学生详情
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 请求结果的描述消息
+ *                   example: 获取学生详情成功
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       description: 学生ID
+ *                     name:
+ *                       type: string
+ *                       description: 学生姓名
+ *                     age:
+ *                       type: integer
+ *                       description: 学生年龄
+ *                     gender:
+ *                       type: integer
+ *                       description: 学生性别
+ *                     province:
+ *                       type: string
+ *                       description: 省份
+ *                     city:
+ *                       type: string
+ *                       description: 城市
+ *                     area:
+ *                       type: string
+ *                       description: 地区
+ *                     hope_salary:
+ *                       type: integer
+ *                       description: 期望薪资
+ *                     salary:
+ *                       type: integer
+ *                       description: 就业薪资
+ *                     classNumber:
+ *                       type: string
+ *                       description: 班级号
+ *       404:
+ *         description: 学生未找到
+ *       500:
+ *         description: 获取学生详情时发生错误
+ */
+router.get("/students/:id", getStudentDetails);
+
+/**
+ * @swagger
+ * /students/{id}:
+ *   put:
+ *     summary: 修改学生数据
+ *     description: 根据学生ID修改学生的详细信息
+ *     tags:
+ *       - 毕业生管理
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 学生ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: 姓名
+ *                 example: 周生生
+ *               age:
+ *                 type: integer
+ *                 description: 年龄
+ *                 example: 20
+ *               gender:
+ *                 type: integer
+ *                 description: 性别 0 男 1 女
+ *                 example: 1
+ *               province:
+ *                 type: string
+ *                 description: 省份
+ *                 example: 北京
+ *               city:
+ *                 type: string
+ *                 description: 城市
+ *                 example: 北京市
+ *               area:
+ *                 type: string
+ *                 description: 地区
+ *                 example: 顺义区
+ *               hope_salary:
+ *                 type: integer
+ *                 description: 期望薪资
+ *                 example: 10000
+ *               salary:
+ *                 type: integer
+ *                 description: 就业薪资
+ *                 example: 20000
+ *               classNumber:
+ *                 type: string
+ *                 description: 班级号
+ *                 example: 2204A
+ *     responses:
+ *       200:
+ *         description: 修改学生成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 请求结果的描述消息
+ *                   example: 修改学生成功
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       description: 学生ID
+ *                     name:
+ *                       type: string
+ *                       description: 学生姓名
+ *                     age:
+ *                       type: integer
+ *                       description: 学生年龄
+ *                     gender:
+ *                       type: integer
+ *                       description: 学生性别
+ *                     province:
+ *                       type: string
+ *                       description: 省份
+ *                     city:
+ *                       type: string
+ *                       description: 城市
+ *                     area:
+ *                       type: string
+ *                       description: 地区
+ *                     hope_salary:
+ *                       type: integer
+ *                       description: 期望薪资
+ *                     salary:
+ *                       type: integer
+ *                       description: 就业薪资
+ *                     classNumber:
+ *                       type: string
+ *                       description: 班级号
+ *       404:
+ *         description: 学生未找到
+ *       500:
+ *         description: 修改学生时发生错误
+ */
+router.put("/students/:id", updateStudent);
+/**
+ * @swagger
+ * /dashboard:
+ *   get:
+ *     summary: 获取面板数据
+ *     description: 获取学生数据的聚合信息
+ *     tags:
+ *       - 毕业生管理
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 成功获取面板数据
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 请求结果的描述消息
+ *                   example: 获取面板数据成功
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     overview:
+ *                       type: object
+ *                       properties:
+ *                         salary:
+ *                           type: integer
+ *                           description: 平均薪资
+ *                         student_count:
+ *                           type: integer
+ *                           description: 学员数量
+ *                         age:
+ *                           type: integer
+ *                           description: 平均年龄
+ *                         class_count:
+ *                           type: integer
+ *                           description: 班级个数
+ *                     year:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           month:
+ *                             type: string
+ *                             description: 月份
+ *                           salary:
+ *                             type: integer
+ *                             description: 薪资
+ *                     salaryData:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           label:
+ *                             type: string
+ *                             description: 薪资范围
+ *                           b_count:
+ *                             type: integer
+ *                             description: 男生人数
+ *                           g_count:
+ *                             type: integer
+ *                             description: 女生人数
+ *                     groupData:
+ *                       type: object
+ *                       additionalProperties:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             name:
+ *                               type: string
+ *                               description: 姓名
+ *                             hope_salary:
+ *                               type: integer
+ *                               description: 期望薪资
+ *                             salary:
+ *                               type: integer
+ *                               description: 实际薪资
+ *                     provinceData:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           name:
+ *                             type: string
+ *                             description: 省份
+ *                           value:
+ *                             type: integer
+ *                             description: 人数
+ *       500:
+ *         description: 获取面板数据时发生错误
+ */
+router.get("/dashboard", getDashboardData);
 module.exports = router;

@@ -28,6 +28,7 @@ const createUserInfo = async (UserModal) => {
 
 const getUserInfoById = async (ctx) => {
     const userId = ctx.params.userId;
+    console.log(userId);
     try {
         const userInfo = await UserInfo.findOne({ where: { userId } });
         if (!userInfo) {
