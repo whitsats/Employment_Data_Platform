@@ -32,6 +32,10 @@
     ```bash
     npm run seed:create
     ```
+5. 运行 koa2
+    ```bash
+    nodemon
+    ```
 
 ## 使用方法
 
