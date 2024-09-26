@@ -38,8 +38,8 @@ app.use(
         },
     })
 );
-app.use(index.routes()).use(index.allowedMethods());
 app.use(swagger.routes(), swagger.allowedMethods());
+app.use(index.routes()).use(index.allowedMethods());
 // error-handling
 app.on("error", (err, ctx) => {
     console.error("server error", err, ctx);

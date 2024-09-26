@@ -1,10 +1,17 @@
-const { User } = require("../data/modal");
+const { sequelize } = require("../data/connect");
+const { User } = require("../data/models")(sequelize);
+const { createUserInfo } = require("./userInfoController");
+const jwt = require("jsonwebtoken");
+const koaJwt = require("koa-jwt");
+
+const secret = "your_jwt_secret";
+
 // 校验用户名是否合法
 const validateUsername = (username) =>
-    /^[a-zA-Z0-9\u4e00-\u9fa5]{8,}$/.test(username);
+    /^[a-zA-Z0-9\u4e00-\u9fa5]{6,}$/.test(username);
 // 校验密码长度
 const validatePassword = (password) => password.length >= 6;
-const register = async (ctx) => async (ctx) => {
+const register = async (ctx) => {
     const { username, password } = ctx.request.body;
     console.log(ctx.request.body);
     console.log(username, password);
@@ -24,7 +31,7 @@ const register = async (ctx) => async (ctx) => {
         ctx.status = 400;
         ctx.body = {
             code: 10003,
-            message: "用户名必须是中英文和数字组成，且不少于8位",
+            message: "用户名必须是中英文和数字组成，且不少于6位",
             data: null,
         };
         return;
@@ -55,7 +62,8 @@ const register = async (ctx) => async (ctx) => {
         }
         // 创建新用户
         const newUser = await User.create({ username, password });
-        ctx.status = 201;
+        // 创建用户详情
+        createUserInfo(newUser);
         ctx.body = {
             code: 0,
             message: "注册成功",
@@ -117,12 +125,22 @@ const login = async (ctx) => {
             return;
         }
 
+        const token = jwt.sign(
+            { id: user.id, username: user.username },
+            secret,
+            {
+                expiresIn: "1h",
+            }
+        );
         // 登录成功
         ctx.status = 200;
         ctx.body = {
             code: 10000,
             message: "登录成功",
-            data: user,
+            data: {
+                ...user,
+                token,
+            },
         };
     } catch (error) {
         ctx.status = 500;
