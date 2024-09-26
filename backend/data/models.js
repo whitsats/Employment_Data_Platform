@@ -31,25 +31,6 @@ const defineModels = (sequelizeInstance) => {
         },
     });
 
-    // const Book = sequelizeInstance.define("Book", {
-    //     id: {
-    //         type: DataTypes.INTEGER,
-    //         primaryKey: true,
-    //     },
-    //     bookname: {
-    //         type: DataTypes.STRING,
-    //         allowNull: false,
-    //     },
-    //     author: {
-    //         type: DataTypes.STRING,
-    //         allowNull: false,
-    //     },
-    //     publisher: {
-    //         type: DataTypes.STRING,
-    //         allowNull: false,
-    //     },
-    // });
-
     const UserInfo = sequelizeInstance.define("UserInfo", {
         id: {
             type: DataTypes.INTEGER,
@@ -90,10 +71,6 @@ const defineModels = (sequelizeInstance) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-        },
-        user_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
         },
         name: {
             type: DataTypes.STRING,
@@ -143,7 +120,7 @@ const defineModels = (sequelizeInstance) => {
         },
     });
 
-    return { User, Area, /*  Book, */ UserInfo, Student };
+    return { User, Area, UserInfo, Student };
 };
 
 module.exports = defineModels;
