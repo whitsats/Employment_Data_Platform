@@ -94,32 +94,14 @@ const getStudentDetails = async (ctx) => {
 const updateStudent = async (ctx) => {
     try {
         const { id } = ctx.params;
-        const {
-            name,
-            age,
-            gender,
-            province,
-            city,
-            area,
-            hope_salary,
-            salary,
-            classNumber,
-        } = ctx.request.body;
+        const updateData = ctx.request.body;
         const student = await Student.findByPk(id);
         if (!student) {
             ctx.status = 404;
             ctx.body = { message: "学生未找到" };
             return;
         }
-        student.name = name;
-        student.age = age;
-        student.gender = gender;
-        student.province = province;
-        student.city = city;
-        student.area = area;
-        student.hope_salary = hope_salary;
-        student.salary = salary;
-        student.classNumber = classNumber;
+        Object.assign(student, updateData);
         await student.save();
         ctx.status = 200;
         ctx.body = {

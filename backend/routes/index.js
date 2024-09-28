@@ -1,10 +1,10 @@
 const router = require("koa-router")();
 const { login, register } = require("../controller/userController");
+const upload = require("../utils/uploadConfig");
 const {
     getUserInfoById,
     updateAvatar,
     updateUserInfo,
-    upload,
 } = require("../controller/userInfoController");
 const KoaJwt = require("koa-jwt");
 const {
@@ -15,6 +15,12 @@ const {
     updateStudent,
     getDashboardData,
 } = require("../controller/studentController");
+const {
+    getProvinces,
+    getCitiesByProvince,
+    getAreasByCity,
+} = require("../controller/areaController");
+
 const secret = "your_jwt_secret";
 
 /**
@@ -950,4 +956,112 @@ router.put("/students/:id", updateStudent);
  *         description: 获取面板数据时发生错误
  */
 router.get("/dashboard", getDashboardData);
+
+/**
+ * @swagger
+ * /area/province:
+ *   get:
+ *     summary: 获取省份列表数据
+ *     description: 获取所有省份的列表数据
+ *     tags:
+ *       - 地区查询
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 成功获取省份列表
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 请求结果的描述消息
+ *                   example: 获取省份列表成功
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     description: 省份名称
+ *       500:
+ *         description: 获取省份列表时发生错误
+ */
+router.get("/area/province", getProvinces);
+/**
+ * @swagger
+ * /area/{provinceCode}/cities:
+ *   get:
+ *     summary: 获取某个省份下的城市列表
+ *     description: 根据省份代码获取该省份下的所有城市列表
+ *     tags:
+ *       - 地区查询
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: provinceCode
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: 省份代码
+ *     responses:
+ *       200:
+ *         description: 成功获取城市列表
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 请求结果的描述消息
+ *                   example: 获取城市列表成功
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     description: 城市名称
+ *       500:
+ *         description: 获取城市列表时发生错误
+ */
+router.get("/area/:provinceCode/cities", getCitiesByProvince);
+/**
+ * @swagger
+ * /area/{cityCode}/areas:
+ *   get:
+ *     summary: 获取某个城市下的区域列表
+ *     description: 根据城市代码获取该城市下的所有区域列表
+ *     tags:
+ *       - 地区查询
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: cityCode
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: 城市代码
+ *     responses:
+ *       200:
+ *         description: 成功获取区域列表
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 请求结果的描述消息
+ *                   example: 获取区域列表成功
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     description: 区域名称
+ *       500:
+ *         description: 获取区域列表时发生错误
+ */
+router.get("/area/:cityCode/areas", getAreasByCity);
 module.exports = router;

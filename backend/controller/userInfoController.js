@@ -1,20 +1,6 @@
 const { sequelize } = require("../data/connect");
 const { UserInfo } = require("../data/models")(sequelize);
-const multer = require("@koa/multer");
-const path = require("path");
 const gravatar = require("../utils/createAvatar");
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/");
-    },
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname);
-        cb(null, `${file.fieldname}-${Date.now()}${ext}`);
-    },
-});
-const upload = multer({ storage });
-
 const createUserInfo = async (UserModal) => {
     await UserInfo.create({
         userId: UserModal.id,
@@ -28,7 +14,6 @@ const createUserInfo = async (UserModal) => {
 
 const getUserInfoById = async (ctx) => {
     const userId = ctx.params.userId;
-    console.log(userId);
     try {
         const userInfo = await UserInfo.findOne({ where: { userId } });
         if (!userInfo) {
@@ -143,5 +128,4 @@ module.exports = {
     getUserInfoById,
     updateAvatar,
     updateUserInfo,
-    upload,
 };
