@@ -36,6 +36,10 @@
     ```bash
     nodemon
     ```
+6. 守护进程
+    ```bash
+    npm run prd
+    ```
 
 ## 使用方法
 
