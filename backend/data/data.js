@@ -15712,7 +15712,7 @@ let books = [
 let userinfo = [
     {
         id: 1,
-
+        userId: 1,
         avatar: "http://hmajax.itheima.net/avatar/avatar2.png",
         nickname: "itheima",
         email: "itheima@itcast.cn",

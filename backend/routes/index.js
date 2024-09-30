@@ -13,6 +13,7 @@ const {
     addStudent,
     getStudentDetails,
     updateStudent,
+    getStudentsByPage,
     getDashboardData,
 } = require("../controller/studentController");
 const {
@@ -469,10 +470,105 @@ router.put("/userInfo/:userId/avatar", upload.single("avatar"), updateAvatar);
  *                   example: 错误信息
  */
 router.put("/userInfo/:userId", updateUserInfo);
-
 /**
  * @swagger
- * /students:
+ * /dashboard:
+ *   get:
+ *     summary: 获取面板数据
+ *     description: 获取学生数据的聚合信息
+ *     tags:
+ *       - 毕业生管理
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 成功获取面板数据
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 请求结果的描述消息
+ *                   example: 获取面板数据成功
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     overview:
+ *                       type: object
+ *                       properties:
+ *                         salary:
+ *                           type: integer
+ *                           description: 平均薪资
+ *                         student_count:
+ *                           type: integer
+ *                           description: 学员数量
+ *                         age:
+ *                           type: integer
+ *                           description: 平均年龄
+ *                         class_count:
+ *                           type: integer
+ *                           description: 班级个数
+ *                     year:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           month:
+ *                             type: string
+ *                             description: 月份
+ *                           salary:
+ *                             type: integer
+ *                             description: 薪资
+ *                     salaryData:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           label:
+ *                             type: string
+ *                             description: 薪资范围
+ *                           b_count:
+ *                             type: integer
+ *                             description: 男生人数
+ *                           g_count:
+ *                             type: integer
+ *                             description: 女生人数
+ *                     groupData:
+ *                       type: object
+ *                       additionalProperties:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             name:
+ *                               type: string
+ *                               description: 姓名
+ *                             hope_salary:
+ *                               type: integer
+ *                               description: 期望薪资
+ *                             salary:
+ *                               type: integer
+ *                               description: 实际薪资
+ *                     provinceData:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           name:
+ *                             type: string
+ *                             description: 省份
+ *                           value:
+ *                             type: integer
+ *                             description: 人数
+ *       500:
+ *         description: 获取面板数据时发生错误
+ */
+router.get("/dashboard", getDashboardData);
+/**
+ * @swagger
+ * /studentsList:
  *   get:
  *     summary: 获取全部学生信息
  *     description: 获取所有学生的详细信息
@@ -547,7 +643,149 @@ router.put("/userInfo/:userId", updateUserInfo);
  *                   description: 错误消息
  *                   example: 无法获取学生列表
  */
-router.get("/students", getAllStudents);
+router.get("/studentsList", getAllStudents);
+/**
+ * @swagger
+ * /students:
+ *   get:
+ *     summary: 分页查询学生
+ *     description: 根据分页参数查询学生列表
+ *     tags:
+ *       - 毕业生管理
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: 页码
+ *       - in: query
+ *         name: pageSize
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: 每页显示的学生数量
+ *     responses:
+ *       200:
+ *         description: 成功获取学生列表
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 请求结果的描述消息
+ *                   example: 获取学生列表成功
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: 学生ID
+ *                       name:
+ *                         type: string
+ *                         description: 学生姓名
+ *                       age:
+ *                         type: integer
+ *                         description: 学生年龄
+ *                       gender:
+ *                         type: integer
+ *                         description: 学生性别
+ *                       province:
+ *                         type: string
+ *                         description: 省份
+ *                       city:
+ *                         type: string
+ *                         description: 城市
+ *                       area:
+ *                         type: string
+ *                         description: 地区
+ *                       hope_salary:
+ *                         type: integer
+ *                         description: 期望薪资
+ *                       salary:
+ *                         type: integer
+ *                         description: 就业薪资
+ *                       classNumber:
+ *                         type: string
+ *                         description: 班级号
+ *       500:
+ *         description: 获取学生列表时发生错误
+ */
+router.get("/students", getStudentsByPage);
+/**
+ * @swagger
+ * /students/{id}:
+ *   get:
+ *     summary: 获取学生详情
+ *     description: 根据学生ID获取学生的详细信息
+ *     tags:
+ *       - 毕业生管理
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 学生ID
+ *     responses:
+ *       200:
+ *         description: 成功获取学生详情
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 请求结果的描述消息
+ *                   example: 获取学生详情成功
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       description: 学生ID
+ *                     name:
+ *                       type: string
+ *                       description: 学生姓名
+ *                     age:
+ *                       type: integer
+ *                       description: 学生年龄
+ *                     gender:
+ *                       type: integer
+ *                       description: 学生性别
+ *                     province:
+ *                       type: string
+ *                       description: 省份
+ *                     city:
+ *                       type: string
+ *                       description: 城市
+ *                     area:
+ *                       type: string
+ *                       description: 地区
+ *                     hope_salary:
+ *                       type: integer
+ *                       description: 期望薪资
+ *                     salary:
+ *                       type: integer
+ *                       description: 就业薪资
+ *                     classNumber:
+ *                       type: string
+ *                       description: 班级号
+ *       404:
+ *         description: 学生未找到
+ *       500:
+ *         description: 获取学生详情时发生错误
+ */
+router.get("/students/:id", getStudentDetails);
 /**
  * @swagger
  * /students/{id}:
@@ -574,7 +812,6 @@ router.get("/students", getAllStudents);
  *         description: 删除学生时发生错误
  */
 router.delete("/students/:id", deleteStudent);
-
 /**
  * @swagger
  * /students:
@@ -679,76 +916,6 @@ router.delete("/students/:id", deleteStudent);
  *         description: 添加学生时发生错误
  */
 router.post("/students", addStudent);
-
-/**
- * @swagger
- * /students/{id}:
- *   get:
- *     summary: 获取学生详情
- *     description: 根据学生ID获取学生的详细信息
- *     tags:
- *       - 毕业生管理
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: 学生ID
- *     responses:
- *       200:
- *         description: 成功获取学生详情
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: 请求结果的描述消息
- *                   example: 获取学生详情成功
- *                 data:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: integer
- *                       description: 学生ID
- *                     name:
- *                       type: string
- *                       description: 学生姓名
- *                     age:
- *                       type: integer
- *                       description: 学生年龄
- *                     gender:
- *                       type: integer
- *                       description: 学生性别
- *                     province:
- *                       type: string
- *                       description: 省份
- *                     city:
- *                       type: string
- *                       description: 城市
- *                     area:
- *                       type: string
- *                       description: 地区
- *                     hope_salary:
- *                       type: integer
- *                       description: 期望薪资
- *                     salary:
- *                       type: integer
- *                       description: 就业薪资
- *                     classNumber:
- *                       type: string
- *                       description: 班级号
- *       404:
- *         description: 学生未找到
- *       500:
- *         description: 获取学生详情时发生错误
- */
-router.get("/students/:id", getStudentDetails);
-
 /**
  * @swagger
  * /students/{id}:
@@ -860,103 +1027,6 @@ router.get("/students/:id", getStudentDetails);
  *         description: 修改学生时发生错误
  */
 router.put("/students/:id", updateStudent);
-/**
- * @swagger
- * /dashboard:
- *   get:
- *     summary: 获取面板数据
- *     description: 获取学生数据的聚合信息
- *     tags:
- *       - 毕业生管理
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: 成功获取面板数据
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: 请求结果的描述消息
- *                   example: 获取面板数据成功
- *                 data:
- *                   type: object
- *                   properties:
- *                     overview:
- *                       type: object
- *                       properties:
- *                         salary:
- *                           type: integer
- *                           description: 平均薪资
- *                         student_count:
- *                           type: integer
- *                           description: 学员数量
- *                         age:
- *                           type: integer
- *                           description: 平均年龄
- *                         class_count:
- *                           type: integer
- *                           description: 班级个数
- *                     year:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           month:
- *                             type: string
- *                             description: 月份
- *                           salary:
- *                             type: integer
- *                             description: 薪资
- *                     salaryData:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           label:
- *                             type: string
- *                             description: 薪资范围
- *                           b_count:
- *                             type: integer
- *                             description: 男生人数
- *                           g_count:
- *                             type: integer
- *                             description: 女生人数
- *                     groupData:
- *                       type: object
- *                       additionalProperties:
- *                         type: array
- *                         items:
- *                           type: object
- *                           properties:
- *                             name:
- *                               type: string
- *                               description: 姓名
- *                             hope_salary:
- *                               type: integer
- *                               description: 期望薪资
- *                             salary:
- *                               type: integer
- *                               description: 实际薪资
- *                     provinceData:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           name:
- *                             type: string
- *                             description: 省份
- *                           value:
- *                             type: integer
- *                             description: 人数
- *       500:
- *         description: 获取面板数据时发生错误
- */
-router.get("/dashboard", getDashboardData);
-
 /**
  * @swagger
  * /area/province:

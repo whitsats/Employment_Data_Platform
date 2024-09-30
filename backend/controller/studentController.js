@@ -16,7 +16,6 @@ const getAllStudents = async (ctx) => {
         ctx.body = { message: "无法获取学生列表" };
     }
 };
-
 const deleteStudent = async (ctx) => {
     try {
         const { id } = ctx.params;
@@ -34,7 +33,6 @@ const deleteStudent = async (ctx) => {
         ctx.body = { message: "删除学生时发生错误" };
     }
 };
-
 const addStudent = async (ctx) => {
     try {
         const {
@@ -90,7 +88,6 @@ const getStudentDetails = async (ctx) => {
         ctx.body = { message: "获取学生详情时发生错误" };
     }
 };
-
 const updateStudent = async (ctx) => {
     try {
         const { id } = ctx.params;
@@ -112,6 +109,28 @@ const updateStudent = async (ctx) => {
         console.error("Error updating student:", error);
         ctx.status = 500;
         ctx.body = { message: "修改学生时发生错误" };
+    }
+};
+const getStudentsByPage = async (ctx) => {
+    try {
+        const { page = 1, pageSize = 10 } = ctx.query;
+        const offset = (page - 1) * pageSize;
+        const students = await Student.findAndCountAll({
+            limit: parseInt(pageSize),
+            offset: parseInt(offset),
+        });
+        ctx.status = 200;
+        ctx.body = {
+            message: "获取学生列表成功",
+            data: students.rows,
+            total: students.count,
+            page: parseInt(page),
+            pageSize: parseInt(pageSize),
+        };
+    } catch (error) {
+        console.error("Error fetching students:", error);
+        ctx.status = 500;
+        ctx.body = { message: "获取学生列表时发生错误" };
     }
 };
 const getDashboardData = async (ctx) => {
@@ -213,11 +232,13 @@ const getDashboardData = async (ctx) => {
         ctx.body = { message: "获取面板数据时发生错误" };
     }
 };
+
 module.exports = {
     getAllStudents,
     deleteStudent,
     addStudent,
     getStudentDetails,
     updateStudent,
+    getStudentsByPage,
     getDashboardData,
 };
