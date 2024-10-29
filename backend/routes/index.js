@@ -23,7 +23,6 @@ const {
 } = require("../controller/areaController");
 
 const secret = "your_jwt_secret";
-
 /**
  * @swagger
  * /register:
@@ -201,8 +200,6 @@ router.post("/login", login);
  *     description: 获取学生数据的聚合信息
  *     tags:
  *       - 毕业生管理
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: 成功获取面板数据
