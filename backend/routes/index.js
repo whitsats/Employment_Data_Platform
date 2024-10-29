@@ -650,6 +650,8 @@ router.get("/studentsList", getAllStudents);
  *     description: 根据分页参数查询学生列表
  *     tags:
  *       - 毕业生管理
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: page
