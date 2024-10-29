@@ -193,9 +193,103 @@ router.post("/register", register);
  *               data: "Internal Server Error"
  */
 router.post("/login", login);
-
+/**
+ * @swagger
+ * /dashboard:
+ *   get:
+ *     summary: 获取面板数据
+ *     description: 获取学生数据的聚合信息
+ *     tags:
+ *       - 毕业生管理
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: 成功获取面板数据
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: 请求结果的描述消息
+ *                   example: 获取面板数据成功
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     overview:
+ *                       type: object
+ *                       properties:
+ *                         salary:
+ *                           type: integer
+ *                           description: 平均薪资
+ *                         student_count:
+ *                           type: integer
+ *                           description: 学员数量
+ *                         age:
+ *                           type: integer
+ *                           description: 平均年龄
+ *                         class_count:
+ *                           type: integer
+ *                           description: 班级个数
+ *                     year:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           month:
+ *                             type: string
+ *                             description: 月份
+ *                           salary:
+ *                             type: integer
+ *                             description: 薪资
+ *                     salaryData:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           label:
+ *                             type: string
+ *                             description: 薪资范围
+ *                           b_count:
+ *                             type: integer
+ *                             description: 男生人数
+ *                           g_count:
+ *                             type: integer
+ *                             description: 女生人数
+ *                     groupData:
+ *                       type: object
+ *                       additionalProperties:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             name:
+ *                               type: string
+ *                               description: 姓名
+ *                             hope_salary:
+ *                               type: integer
+ *                               description: 期望薪资
+ *                             salary:
+ *                               type: integer
+ *                               description: 实际薪资
+ *                     provinceData:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           name:
+ *                             type: string
+ *                             description: 省份
+ *                           value:
+ *                             type: integer
+ *                             description: 人数
+ *       500:
+ *         description: 获取面板数据时发生错误
+ */
+router.get("/dashboard", getDashboardData);
 router.use(KoaJwt({ secret }));
-
 /**
  * @swagger
  * /userInfo/{id}:
@@ -470,102 +564,6 @@ router.put("/userInfo/:userId/avatar", upload.single("avatar"), updateAvatar);
  *                   example: 错误信息
  */
 router.put("/userInfo/:userId", updateUserInfo);
-/**
- * @swagger
- * /dashboard:
- *   get:
- *     summary: 获取面板数据
- *     description: 获取学生数据的聚合信息
- *     tags:
- *       - 毕业生管理
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: 成功获取面板数据
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: 请求结果的描述消息
- *                   example: 获取面板数据成功
- *                 data:
- *                   type: object
- *                   properties:
- *                     overview:
- *                       type: object
- *                       properties:
- *                         salary:
- *                           type: integer
- *                           description: 平均薪资
- *                         student_count:
- *                           type: integer
- *                           description: 学员数量
- *                         age:
- *                           type: integer
- *                           description: 平均年龄
- *                         class_count:
- *                           type: integer
- *                           description: 班级个数
- *                     year:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           month:
- *                             type: string
- *                             description: 月份
- *                           salary:
- *                             type: integer
- *                             description: 薪资
- *                     salaryData:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           label:
- *                             type: string
- *                             description: 薪资范围
- *                           b_count:
- *                             type: integer
- *                             description: 男生人数
- *                           g_count:
- *                             type: integer
- *                             description: 女生人数
- *                     groupData:
- *                       type: object
- *                       additionalProperties:
- *                         type: array
- *                         items:
- *                           type: object
- *                           properties:
- *                             name:
- *                               type: string
- *                               description: 姓名
- *                             hope_salary:
- *                               type: integer
- *                               description: 期望薪资
- *                             salary:
- *                               type: integer
- *                               description: 实际薪资
- *                     provinceData:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           name:
- *                             type: string
- *                             description: 省份
- *                           value:
- *                             type: integer
- *                             description: 人数
- *       500:
- *         description: 获取面板数据时发生错误
- */
-router.get("/dashboard", getDashboardData);
 /**
  * @swagger
  * /studentsList:
