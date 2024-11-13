@@ -1,5 +1,5 @@
-const { sequelize } = require("../data/connect");
-const { UserInfo } = require("../data/models")(sequelize);
+const { sequelize } = require("../model/connect");
+const { UserInfo } = require("../model/models")(sequelize);
 const gravatar = require("../utils/createAvatar");
 const createUserInfo = async (UserModal) => {
     await UserInfo.create({

@@ -1,5 +1,5 @@
-const { sequelize } = require("../data/connect");
-const { Area } = require("../data/models")(sequelize);
+const { sequelize } = require("../model/connect");
+const { Area } = require("../model/models")(sequelize);
 
 const getProvinces = async (ctx) => {
     try {

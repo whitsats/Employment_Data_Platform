@@ -1,6 +1,6 @@
-const { user, area, students, userinfo } = require("./data/data");
+const { user, area, students, userinfo } = require("./data");
 const { Sequelize } = require("sequelize");
-const defineModels = require("./data/models");
+const defineModels = require("./models");
 const mysql = require("mysql2/promise");
 
 // 数据库配置

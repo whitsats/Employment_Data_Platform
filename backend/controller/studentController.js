@@ -1,5 +1,5 @@
-const { sequelize } = require("../data/connect");
-const { Student } = require("../data/models")(sequelize);
+const { sequelize } = require("../model/connect");
+const { Student } = require("../model/models")(sequelize);
 
 // 获取全部学生列表的控制器
 const getAllStudents = async (ctx) => {
