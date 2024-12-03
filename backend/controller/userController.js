@@ -3,7 +3,7 @@ const { User } = require("../model/models")(sequelize);
 const { createUserInfo } = require("./userInfoController");
 const jwt = require("jsonwebtoken");
 
-const secret = "your_jwt_secret";
+const secret = process.env.SECRET_KEY;
 
 // 校验用户名是否合法
 const validateUsername = (username) =>

@@ -7,6 +7,9 @@ const logger = require("koa-logger");
 const cors = require("koa2-cors");
 const { koaSwagger } = require("koa2-swagger-ui");
 const swagger = require("./utils/swagger");
+const path = require("path");
+const customPath = path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`);
+require("dotenv").config({ path: customPath });
 
 const index = require("./routes/index"); // 引入用户路由
 

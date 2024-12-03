@@ -22,7 +22,7 @@ const {
     getAreasByCity,
 } = require("../controller/areaController");
 
-const secret = "your_jwt_secret";
+const secret = process.env.SECRET_KEY;
 /**
  * @swagger
  * /register:
