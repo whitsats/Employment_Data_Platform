@@ -37,16 +37,8 @@ const defineModels = (sequelizeInstance) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        userId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: User,
-                key: "id",
-            },
-        },
         avatar: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         nickname: {
@@ -66,6 +58,13 @@ const defineModels = (sequelizeInstance) => {
             allowNull: false,
         },
     });
+
+    User.hasOne(UserInfo, {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+    });
+    UserInfo.belongsTo(User);
+
     const Student = sequelizeInstance.define("Student", {
         id: {
             type: DataTypes.INTEGER,

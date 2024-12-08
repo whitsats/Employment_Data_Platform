@@ -289,7 +289,7 @@ router.get("/dashboard", getDashboardData);
 router.use(KoaJwt({ secret }));
 /**
  * @swagger
- * /userInfo/{id}:
+ * /userInfo/{UserId}:
  *   get:
  *     summary: 获取用户信息
  *     description: 根据用户ID获取用户信息
@@ -298,7 +298,7 @@ router.use(KoaJwt({ secret }));
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: UserId
  *         required: true
  *         description: 用户ID
  *         schema:
@@ -320,7 +320,7 @@ router.use(KoaJwt({ secret }));
  *                 data:
  *                   type: object
  *                   properties:
- *                     userId:
+ *                     UserId:
  *                       type: number
  *                       example: 1
  *                     avatar:
@@ -370,7 +370,7 @@ router.use(KoaJwt({ secret }));
  *                   type: string
  *                   example: 错误信息
  */
-router.get("/userInfo/:userId", getUserInfoById);
+router.get("/userInfo/:UserId", getUserInfoById);
 /**
  * @swagger
  * /userInfo/{userId}/avatar:
@@ -456,7 +456,7 @@ router.get("/userInfo/:userId", getUserInfoById);
 router.put("/userInfo/:userId/avatar", upload.single("avatar"), updateAvatar);
 /**
  * @swagger
- * /userInfo/{userId}:
+ * /userInfo/{UserId}:
  *   put:
  *     summary: 更新用户基本信息
  *     description: 根据用户ID更新用户的基本信息（不包括头像）
@@ -465,7 +465,7 @@ router.put("/userInfo/:userId/avatar", upload.single("avatar"), updateAvatar);
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: userId
+ *         name: UserId
  *         required: true
  *         description: 用户ID
  *         schema:
@@ -510,7 +510,7 @@ router.put("/userInfo/:userId/avatar", upload.single("avatar"), updateAvatar);
  *                 data:
  *                   type: object
  *                   properties:
- *                     userId:
+ *                     UserId:
  *                       type: number
  *                       example: 1
  *                     avatar:
@@ -560,7 +560,7 @@ router.put("/userInfo/:userId/avatar", upload.single("avatar"), updateAvatar);
  *                   type: string
  *                   example: 错误信息
  */
-router.put("/userInfo/:userId", updateUserInfo);
+router.put("/userInfo/:UserId", updateUserInfo);
 /**
  * @swagger
  * /studentsList:

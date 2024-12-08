@@ -1,8 +1,9 @@
-const Crypto = require('crypto');
+const identicon = require("identicon");
 
-function gravatar(mail) {
-  let size = 100
-  let hash = Crypto.createHash('md5').update(mail.trim().toLowerCase()).digest("hex")
-  return `http://www.gravatar.com/avatar/${hash}?s=${size}&d=identicon`;
+function cravatar(username) {
+    return (
+        "data:image/jpeg;base64," +
+        identicon.generateSync({ id: username, size: 100 }).toString("base64")
+    );
 }
-module.exports = gravatar
+module.exports = cravatar;

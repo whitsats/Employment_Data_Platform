@@ -1,10 +1,10 @@
 const { sequelize } = require("../model/connect");
 const { UserInfo } = require("../model/models")(sequelize);
-const gravatar = require("../utils/createAvatar");
+const cravatar = require("../utils/createAvatar");
 const createUserInfo = async (UserModal) => {
     await UserInfo.create({
-        userId: UserModal.id,
-        avatar: gravatar(UserModal.username + "@backend.com"),
+        UserId: UserModal.id,
+        avatar: cravatar(UserModal.username),
         nickname: UserModal.username,
         email: UserModal.username + "@backend.com",
         desc: "这个人很懒，没有留下什么介绍",
@@ -13,9 +13,9 @@ const createUserInfo = async (UserModal) => {
 };
 
 const getUserInfoById = async (ctx) => {
-    const userId = ctx.params.userId;
+    const UserId = ctx.params.UserId;
     try {
-        const userInfo = await UserInfo.findOne({ where: { userId } });
+        const userInfo = await UserInfo.findOne({ where: { UserId } });
         if (!userInfo) {
             ctx.status = 400;
             ctx.body = {
@@ -41,7 +41,7 @@ const getUserInfoById = async (ctx) => {
 };
 
 const updateAvatar = async (ctx) => {
-    const { userId } = ctx.params;
+    const { UserId } = ctx.params;
     const file = ctx.file;
 
     if (!file) {
@@ -55,7 +55,7 @@ const updateAvatar = async (ctx) => {
     }
 
     try {
-        const userInfo = await UserInfo.findOne({ where: { userId } });
+        const userInfo = await UserInfo.findOne({ where: { UserId } });
         if (!userInfo) {
             ctx.status = 400;
             ctx.body = {
@@ -72,7 +72,7 @@ const updateAvatar = async (ctx) => {
         ctx.body = {
             message: "头像更新成功",
             data: {
-                userId: userInfo.userId,
+                UserId: userInfo.UserId,
                 avatar: userInfo.avatar,
             },
         };
@@ -86,11 +86,11 @@ const updateAvatar = async (ctx) => {
 };
 
 const updateUserInfo = async (ctx) => {
-    const { userId } = ctx.params;
+    const { UserId } = ctx.params;
     const { nickname, email, desc, gender } = ctx.request.body;
 
     try {
-        const userInfo = await UserInfo.findOne({ where: { userId } });
+        const userInfo = await UserInfo.findOne({ where: { UserId } });
         if (!userInfo) {
             ctx.status = 400;
             ctx.body = {

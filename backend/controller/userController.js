@@ -62,7 +62,7 @@ const register = async (ctx) => {
         // 创建新用户
         const newUser = await User.create({ username, password });
         // 创建用户详情
-        createUserInfo(newUser);
+        await createUserInfo(newUser);
         ctx.body = {
             code: 0,
             message: "注册成功",

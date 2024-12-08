@@ -7,14 +7,15 @@
         "dev": "cross-env NODE_ENV=development nodemon bin/www",
         "prd": "pm2 start bin/www",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "seed:create": "node seed.js create",
-        "seed:clear": "node seed.js clear"
+        "seed:create": "node ./model/seed.js create",
+        "seed:clear": "node ./model/seed.js clear"
     },
     "dependencies": {
         "@koa/multer": "^3.0.2",
         "cross-env": "^7.0.3",
         "debug": "^4.1.1",
         "dotenv": "^16.4.5",
+        "identicon": "^3.1.1",
         "jsonwebtoken": "^9.0.2",
         "koa": "^2.7.0",
         "koa-bodyparser": "^4.2.1",
