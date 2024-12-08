@@ -7,8 +7,8 @@
         "dev": "cross-env NODE_ENV=development nodemon bin/www",
         "prd": "pm2 start bin/www",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "seed:create": "node ./model/seed.js create",
-        "seed:clear": "node ./model/seed.js clear"
+        "seed:create": "cross-env NODE_ENV=development node ./model/seed.js create",
+        "seed:clear": "cross-env NODE_ENV=development node ./model/seed.js clear"
     },
     "dependencies": {
         "@koa/multer": "^3.0.2",

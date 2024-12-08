@@ -2,12 +2,14 @@ const { user, area, students, userinfo } = require("./data");
 const { Sequelize } = require("sequelize");
 const defineModels = require("./models");
 const mysql = require("mysql2/promise");
-
+const path = require("path");
+const customPath = path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`);
+require("dotenv").config({ path: customPath });
 // 数据库配置
-const dbName = "backend";
-const username = "root";
-const password = "123456";
-const host = "localhost";
+const dbName = process.env.DATA_BASE;
+const username = process.env.DATA_BASE_USER;
+const password = process.env.DATA_BASE_PWD;
+const host = process.env.DATA_BASE_HOST;
 
 // 递归插入 Area 数据
 async function insertAreaData(areaData, parentCode = null, Area) {

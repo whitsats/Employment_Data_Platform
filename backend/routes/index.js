@@ -373,7 +373,7 @@ router.use(KoaJwt({ secret }));
 router.get("/userInfo/:UserId", getUserInfoById);
 /**
  * @swagger
- * /userInfo/{userId}/avatar:
+ * /userInfo/{UserId}/avatar:
  *   put:
  *     summary: 更新用户头像
  *     description: 根据用户ID上传并更新用户头像
@@ -382,7 +382,7 @@ router.get("/userInfo/:UserId", getUserInfoById);
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: userId
+ *         name: UserId
  *         required: true
  *         description: 用户ID
  *         schema:
@@ -415,7 +415,7 @@ router.get("/userInfo/:UserId", getUserInfoById);
  *                 data:
  *                   type: object
  *                   properties:
- *                     userId:
+ *                     UserId:
  *                       type: number
  *                       example: 1
  *                     avatar:
@@ -453,7 +453,7 @@ router.get("/userInfo/:UserId", getUserInfoById);
  *                   type: string
  *                   example: 错误信息
  */
-router.put("/userInfo/:userId/avatar", upload.single("avatar"), updateAvatar);
+router.put("/userInfo/:UserId/avatar", upload.single("avatar"), updateAvatar);
 /**
  * @swagger
  * /userInfo/{UserId}:
