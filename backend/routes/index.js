@@ -199,7 +199,7 @@ router.post("/login", login);
  *     summary: 获取面板数据
  *     description: 获取学生数据的聚合信息
  *     tags:
- *       - 毕业生管理
+ *       - Dashboard
  *     responses:
  *       200:
  *         description: 成功获取面板数据
@@ -219,43 +219,57 @@ router.post("/login", login);
  *                       type: object
  *                       properties:
  *                         salary:
- *                           type: integer
+ *                           type: number
  *                           description: 平均薪资
  *                         student_count:
  *                           type: integer
  *                           description: 学员数量
  *                         age:
- *                           type: integer
+ *                           type: number
  *                           description: 平均年龄
  *                         class_count:
  *                           type: integer
  *                           description: 班级个数
- *                     year:
+ *                     salaryTrend:
  *                       type: array
  *                       items:
  *                         type: object
  *                         properties:
+ *                           year:
+ *                             type: integer
+ *                             description: 年份
  *                           month:
- *                             type: string
+ *                             type: integer
  *                             description: 月份
  *                           salary:
- *                             type: integer
- *                             description: 薪资
- *                     salaryData:
+ *                             type: number
+ *                             description: 平均薪资
+ *                     salaryDistribution:
  *                       type: array
  *                       items:
  *                         type: object
  *                         properties:
- *                           label:
+ *                           salary_range:
  *                             type: string
  *                             description: 薪资范围
- *                           b_count:
+ *                           student_count:
  *                             type: integer
- *                             description: 男生人数
- *                           g_count:
+ *                             description: 学生数量
+ *                     genderSalaryDistribution:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           salary_range:
+ *                             type: string
+ *                             description: 薪资范围
+ *                           gender:
  *                             type: integer
- *                             description: 女生人数
- *                     groupData:
+ *                             description: 性别
+ *                           student_count:
+ *                             type: integer
+ *                             description: 学生数量
+ *                     classSalaryComparison:
  *                       type: object
  *                       additionalProperties:
  *                         type: array
@@ -266,22 +280,22 @@ router.post("/login", login);
  *                               type: string
  *                               description: 姓名
  *                             hope_salary:
- *                               type: integer
+ *                               type: number
  *                               description: 期望薪资
  *                             salary:
- *                               type: integer
+ *                               type: number
  *                               description: 实际薪资
- *                     provinceData:
+ *                     provinceDistribution:
  *                       type: array
  *                       items:
  *                         type: object
  *                         properties:
- *                           name:
+ *                           province:
  *                             type: string
  *                             description: 省份
  *                           value:
  *                             type: integer
- *                             description: 人数
+ *                             description: 学生数量
  *       500:
  *         description: 获取面板数据时发生错误
  */

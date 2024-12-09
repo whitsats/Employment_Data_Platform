@@ -135,7 +135,6 @@ const getStudentsByPage = async (ctx) => {
 };
 const getDashboardData = async (ctx) => {
     try {
-        // 聚合数据
         const overview = await Student.findOne({
             attributes: [
                 [sequelize.fn("AVG", sequelize.col("salary")), "salary"],
@@ -150,63 +149,56 @@ const getDashboardData = async (ctx) => {
                 ],
             ],
         });
-
-        const year = await Student.findAll({
+        const salaryTrend = await Student.findAll({
             attributes: [
+                [sequelize.fn("YEAR", sequelize.col("createdAt")), "year"],
                 [sequelize.fn("MONTH", sequelize.col("createdAt")), "month"],
-                [sequelize.fn("SUM", sequelize.col("salary")), "salary"],
+                [sequelize.fn("AVG", sequelize.col("salary")), "salary"],
             ],
-            group: [sequelize.fn("MONTH", sequelize.col("createdAt"))],
+            group: ["year", "month"],
         });
-
-        const salaryData = await Student.findAll({
+        const salaryDistribution = await Student.findAll({
             attributes: [
                 [
-                    sequelize.literal(`CASE
+                    sequelize.literal(
+                        `CASE
+                            WHEN salary < 10000 THEN '1万以下'
+                            WHEN salary BETWEEN 10000 AND 15000 THEN '1-1.5万'
+                            WHEN salary BETWEEN 15000 AND 20000 THEN '1.5-2万'
+                            ELSE '2万以上'
+                        END`
+                    ),
+                    "salary_range",
+                ],
+                [sequelize.fn("COUNT", sequelize.col("id")), "student_count"],
+            ],
+            group: ["salary_range"],
+        });
+        const genderSalaryDistribution = await Student.findAll({
+            attributes: [
+                [
+                    sequelize.literal(
+                        `CASE
                     WHEN salary < 10000 THEN '1万以下'
                     WHEN salary BETWEEN 10000 AND 15000 THEN '1-1.5万'
                     WHEN salary BETWEEN 15000 AND 20000 THEN '1.5-2万'
                     ELSE '2万以上'
-                END`),
-                    "label",
-                ],
-                [
-                    sequelize.fn(
-                        "SUM",
-                        sequelize.literal(
-                            `CASE WHEN gender = 0 THEN 1 ELSE 0 END`
-                        )
+                END`
                     ),
-                    "b_count",
+                    "salary_range",
                 ],
-                [
-                    sequelize.fn(
-                        "SUM",
-                        sequelize.literal(
-                            `CASE WHEN gender = 1 THEN 1 ELSE 0 END`
-                        )
-                    ),
-                    "g_count",
-                ],
+                "gender",
+                [sequelize.fn("COUNT", sequelize.col("id")), "student_count"],
             ],
-            group: ["label"],
+            group: ["salary_range", "gender"],
         });
-
-        const groupData = await Student.findAll({
+        const classSalary = await Student.findAll({
             attributes: ["classNumber", "name", "hope_salary", "salary"],
             order: [["classNumber", "ASC"]],
         });
 
-        const provinceData = await Student.findAll({
-            attributes: [
-                "province",
-                [sequelize.fn("COUNT", sequelize.col("id")), "value"],
-            ],
-            group: ["province"],
-        });
-
-        // 处理groupData
-        const groupedData = groupData.reduce((acc, student) => {
+        // 将查询结果转换为适合前端展示的格式
+        const classSalaryComparison = classSalary.reduce((acc, student) => {
             const { classNumber, name, hope_salary, salary } = student;
             if (!acc[classNumber]) {
                 acc[classNumber] = [];
@@ -215,21 +207,28 @@ const getDashboardData = async (ctx) => {
             return acc;
         }, {});
 
+        const provinceDistribution = await Student.findAll({
+            attributes: [
+                "province",
+                [sequelize.fn("COUNT", sequelize.col("id")), "value"],
+            ],
+            group: ["province"],
+        });
         ctx.status = 200;
         ctx.body = {
             message: "获取面板数据成功",
             data: {
                 overview,
-                year,
-                salaryData,
-                groupData: groupedData,
-                provinceData,
+                salaryTrend,
+                salaryDistribution,
+                genderSalaryDistribution,
+                classSalaryComparison,
+                provinceDistribution,
             },
         };
     } catch (error) {
         console.error("Error fetching dashboard data:", error);
-        ctx.status = 500;
-        ctx.body = { message: "获取面板数据时发生错误" };
+        ctx.status;
     }
 };
 
