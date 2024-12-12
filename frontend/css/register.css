@@ -1,0 +1,33 @@
+body {
+    background-color: #f8f8fb;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+.gradient-bg {
+    background: linear-gradient(to left, #4a90e2, #6ec1ff);
+    height: 430px;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+.register-card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    position: relative;
+    height: 420px;
+    margin-top: -100px;
+}
+.custom-form-control {
+    border-radius: 8px;
+}
+.custom-btn {
+    border-radius: 8px;
+    color: #fff;
+    background-color: #2575fc;
+    border: none;
+}
+.custom-btn:hover {
+    background-color: #6a11cb;
+    color: #fff;
+}

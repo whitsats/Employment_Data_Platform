@@ -12,8 +12,6 @@ const validateUsername = (username) =>
 const validatePassword = (password) => password.length >= 6;
 const register = async (ctx) => {
     const { username, password } = ctx.request.body;
-    console.log(ctx.request.body);
-    console.log(username, password);
     // 校验是否有提供用户名和密码
     if (!username || !password) {
         ctx.status = 400;
