@@ -6,7 +6,7 @@ const {
     updateAvatar,
     updateUserInfo,
 } = require("../controller/userInfoController");
-const KoaJwt = require("koa-jwt");
+
 const {
     getAllStudents,
     deleteStudent,
@@ -21,7 +21,8 @@ const {
     getCitiesByProvince,
     getAreasByCity,
 } = require("../controller/areaController");
-const secret = process.env.SECRET_KEY;
+const { tokenVerify } = require("../utils/tokenVerify");
+
 /**
  * @swagger
  * /register:
@@ -299,7 +300,7 @@ router.post("/login", login);
  *         description: 获取面板数据时发生错误
  */
 router.get("/dashboard", getDashboardData);
-router.use(KoaJwt({ secret }));
+router.use(tokenVerify);
 /**
  * @swagger
  * /userInfo/{UserId}:
