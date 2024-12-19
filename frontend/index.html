@@ -1,51 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-        <script src="./js/echarts.js"></script>
+        <title>登录页面</title>
+        <!-- 引入Bootstrap CSS -->
+        <link href="./css/bootstrap.min.css" rel="stylesheet" />
+        <style>
+            body {
+                background-color: #f8f9fa;
+            }
+            .container {
+                margin-top: 30px;
+            }
+            .course-table {
+                margin-top: 20px;
+            }
+        </style>
     </head>
     <body>
-        <!-- 4.ECharts 的容器( 必须要有高度,宽度是可选的 ) -->
-        <div id="main" style="height: 400px"></div>
-        <script>
-            window.onload = function () {
-                let myChart = echarts.init(document.getElementById("main"));
-                let option = {
-                    backgroundColor: "rgba(255, 0, 0, 0.1)",
-                    grid: {
-                        show: true,
-                        backgroundColor: "rgba(0, 255, 0, 0.1)",
-                    },
-
-                    xAxis: {
-                        data: [
-                            "衬衫",
-                            "羊毛衫",
-                            "雪纺衫",
-                            "裤子",
-                            "高跟鞋",
-                            "袜子",
-                        ],
-                    },
-                    tooltip: {
-                        show: true, // 是否显示提示框
-                        trigger: "axis", // 触发类型
-                        axisPointer: {
-                            type: "cross", // 指示器类型
-                        },
-                    },
-                    yAxis: {},
-                    series: [
-                        {
-                            type: "bar",
-                            data: [5, 20, 36, 10, 10, 20],
-                        },
-                    ],
-                };
-                myChart.setOption(option);
-            };
-        </script>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">课程管理平台</a>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">埃尼阿克</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">退出登录</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            <h2 class="text-center mb-4">课程列表</h2>
+            <table
+                class="table table-striped table-bordered table-hover course-table"
+            >
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">课程ID</th>
+                        <th scope="col">课程名</th>
+                        <th scope="col">课程等级</th>
+                        <th scope="col">授课教师</th>
+                        <th scope="col">课程分类</th>
+                        <th scope="col">操作</th>
+                        <!-- 添加操作列 -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>前端开发基础</td>
+                        <td>初级</td>
+                        <td>张老师</td>
+                        <td>编程</td>
+                        <td>
+                            <a
+                                href="course-detail.html?courseId=001"
+                                class="btn btn-info btn-sm"
+                                >查看详情</a
+                            >
+                        </td>
+                        <!-- 课程详情按钮 -->
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td>数据库原理</td>
+                        <td>中级</td>
+                        <td>李老师</td>
+                        <td>数据库</td>
+                        <td>
+                            <a
+                                href="course-detail.html?courseId=002"
+                                class="btn btn-info btn-sm"
+                                >查看详情</a
+                            >
+                        </td>
+                        <!-- 课程详情按钮 -->
+                    </tr>
+                    <tr>
+                        <td>003</td>
+                        <td>Python数据分析</td>
+                        <td>高级</td>
+                        <td>王老师</td>
+                        <td>数据科学</td>
+                        <td>
+                            <a
+                                href="course-detail.html?courseId=003"
+                                class="btn btn-info btn-sm"
+                                >查看详情</a
+                            >
+                        </td>
+                        <!-- 课程详情按钮 -->
+                    </tr>
+                    <tr>
+                        <td>004</td>
+                        <td>Java高级编程</td>
+                        <td>高级</td>
+                        <td>陈老师</td>
+                        <td>编程</td>
+                        <td>
+                            <a
+                                href="course-detail.html?courseId=004"
+                                class="btn btn-info btn-sm"
+                                >查看详情</a
+                            >
+                        </td>
+                        <!-- 课程详情按钮 -->
+                    </tr>
+                    <tr>
+                        <td>005</td>
+                        <td>网络安全基础</td>
+                        <td>中级</td>
+                        <td>刘老师</td>
+                        <td>安全</td>
+                        <td>
+                            <a
+                                href="course-detail.html?courseId=005"
+                                class="btn btn-info btn-sm"
+                                >查看详情</a
+                            >
+                        </td>
+                        <!-- 课程详情按钮 -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- 引入Bootstrap JS和Popper.js -->
+        <script src="./js/bootstrap.bundle.js"></script>
     </body>
 </html>
