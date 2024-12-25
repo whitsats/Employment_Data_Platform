@@ -4,7 +4,7 @@ const { Area } = require("../model/models")(sequelize);
 const getProvinces = async (ctx) => {
     try {
         const provinces = await Area.findAll({
-            attributes: ["value"],
+            attributes: ["code", "value"],
             where: {
                 parentCode: null,
             },
@@ -26,7 +26,7 @@ const getCitiesByProvince = async (ctx) => {
     try {
         const { provinceCode } = ctx.params;
         const cities = await Area.findAll({
-            attributes: ["value"],
+            attributes: ["code", "value", "parentCode"],
             where: {
                 parentCode: provinceCode,
             },
@@ -47,7 +47,7 @@ const getAreasByCity = async (ctx) => {
     try {
         const { cityCode } = ctx.params;
         const areas = await Area.findAll({
-            attributes: ["value"],
+            attributes: ["code", "value", "parentCode"],
             where: {
                 parentCode: cityCode,
             },
