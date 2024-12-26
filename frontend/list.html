@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>学生管理</title>
+        <link href="./css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="./css/bootstrap-icons.css" />
+        <link rel="stylesheet" href="./css/common.css" />
+
+        <style>
+            body {
+                background-color: #f8f8fb;
+                height: 100vh;
+                margin: 0;
+                overflow-x: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+            .gradient-bg {
+                background: linear-gradient(to left, #4a90e2, #6ec1ff);
+                height: 400px;
+                border-bottom-left-radius: 50px;
+                border-bottom-right-radius: 50px;
+                position: relative;
+                z-index: 1;
+            }
+            .list-container {
+                background-color: #fff;
+                border: none;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                border-radius: 12px;
+                position: relative;
+                margin-top: -80px;
+                padding: 20px;
+                z-index: 2;
+            }
+            .table-container {
+                overflow-x: auto;
+            }
+            .navbar {
+                z-index: 3;
+            }
+            .navbar-brand {
+                color: #fff;
+                font-weight: bold;
+            }
+            .navbar-brand:hover {
+                color: #dfe8f1;
+            }
+            .nav-link {
+                color: #fff;
+            }
+            .nav-link:hover {
+                color: #dfe8f1;
+            }
+            footer {
+                margin-top: auto;
+                background-color: #f8f8fb;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="gradient-bg w-100">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container">
+                    <a class="navbar-brand" href="#">鸿蒙生态开发学院</a>
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">个人中心</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="container list-container">
+            <div class="table-container">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>姓名</th>
+                            <th>年龄</th>
+                            <th>性别</th>
+                            <th>班级</th>
+                            <th>预期薪资</th>
+                            <th>就业薪资</th>
+                            <th>就业地点</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 示例数据 -->
+                        <tr>
+                            <td>李华</td>
+                            <td>22</td>
+                            <td>男</td>
+                            <td>2212A</td>
+                            <td>13500</td>
+                            <td>21600</td>
+                            <td>天津和平区</td>
+                            <td>
+                                <a href="#" class="text-primary me-2"
+                                    ><i class="bi bi-pencil"></i
+                                ></a>
+                                <a href="#" class="text-danger"
+                                    ><i class="bi bi-trash"></i
+                                ></a>
+                            </td>
+                        </tr>
+                        <!-- 可通过后端生成类似数据 -->
+                    </tbody>
+                </table>
+                <nav>
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">3</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <footer class="container py-4">
+            <div class="row">
+                <div class="col text-start">&copy; 2023 鸿蒙学院</div>
+                <div class="col text-end">All rights reserved.</div>
+            </div>
+        </footer>
+
+        <script src="./lib/axios.min.js"></script>
+        <script src="./lib/bootstrap.bundle.js"></script>
+        <script src="./js/common.js"></script>
+    </body>
+</html>

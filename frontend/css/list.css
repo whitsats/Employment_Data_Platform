@@ -1,0 +1,20 @@
+body {
+    background-color: #f8f8fb;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+.gradient-bg {
+    background: linear-gradient(to left, #4a90e2, #6ec1ff);
+    height: 430px;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+.list-container {
+    background-color: #fff;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    position: relative;
+    margin-top: -100px;
+}
