@@ -45,6 +45,11 @@ const defineModels = (sequelizeInstance) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        age: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
