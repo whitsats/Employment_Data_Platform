@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const multer = require("@koa/multer");
 
-const uploadDir = path.join(__dirname, "../uploads");
+const uploadDir = path.join(__dirname, "..public/uploads");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
