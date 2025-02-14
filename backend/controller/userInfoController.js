@@ -87,7 +87,7 @@ const updateAvatar = async (ctx) => {
 
 const updateUserInfo = async (ctx) => {
     const { UserId } = ctx.params;
-    const { nickname, email, desc, gender } = ctx.request.body;
+    const { nickname, email, desc, gender,age } = ctx.request.body;
 
     try {
         const userInfo = await UserInfo.findOne({ where: { UserId } });
@@ -102,6 +102,7 @@ const updateUserInfo = async (ctx) => {
         }
 
         userInfo.nickname = nickname || userInfo.nickname;
+        userInfo.age = age || userInfo.age;
         userInfo.email = email || userInfo.email;
         userInfo.desc = desc || userInfo.desc;
         userInfo.gender = gender !== undefined ? gender : userInfo.gender;
